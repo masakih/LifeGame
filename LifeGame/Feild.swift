@@ -5,12 +5,17 @@
 //  Created by Hori,Masaki on 2025/12/11.
 //
 
+import Combine
+
 final class Feild {
 
     private(set) var width: Int
     private(set) var height: Int
 
     private var buffer: [[[Bool]]]
+    
+    // grow()によって変更されたセルをpublishする
+    private var subject: PassthroughSubject<[(Int, Int)], Never> = .init()
 
     private enum CurrentBuffer: Int {
         case first = 0, second = 1
@@ -100,19 +105,27 @@ final class Feild {
     /// 一世代進める
     func grow() {
         
+        var changedCells: [(Int, Int)] = []
+        
         for i in 1..<(height - 1) {
             for j in 1..<(width - 1) {
                 
-                buffer[nextIndex][i][j] = grow1(
+                let next = grow1(
                     p: storage[i][j],
                     topLeft(j, i), top(j, i), topRight(j, i),
                     left(j, i),  right(j, i),
                     bottomLeft(j, i), bottom(j, i), bottomRight(j, i)
                 )
+                if storage[i][j] != next {
+                    changedCells.append( (j, i) )
+                }
+                buffer[nextIndex][i][j] = next
             }
         }
 
         currentBuffer.toggle()
+        
+        subject.send(changedCells)
     }
     
     /// 指定座標のOn/Offを切り替える
@@ -131,6 +144,14 @@ final class Feild {
         }
         
         buffer[currentBuffer.rawValue][y][x].toggle()
+        
+        subject.send([(x, y)])
+    }
+    
+    /// 変更されたセルの座標(0-base)の配列をPublishするPublisher
+    func publisher() -> AnyPublisher<[(Int, Int)], Never> {
+        
+        subject.eraseToAnyPublisher()
     }
 
 }
