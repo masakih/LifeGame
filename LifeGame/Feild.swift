@@ -7,8 +7,8 @@
 
 final class Feild {
 
-    var width: Int
-    var height: Int
+    private(set) var width: Int
+    private(set) var height: Int
 
     private var buffer: [[[Bool]]]
 
