@@ -96,7 +96,8 @@ final class Feild {
             case (true, _): return false
         }
     }
-
+    
+    /// 一世代進める
     func grow() {
         
         for i in 1..<(height - 1) {
@@ -114,6 +115,10 @@ final class Feild {
         currentBuffer.toggle()
     }
     
+    /// 指定座標のOn/Offを切り替える
+    /// - Parameters:
+    ///   - x: ｘ座標(0-base)
+    ///   - y: Ｙ座標(0-base)
     func toggle(_ x: Int, _ y: Int) {
         assert(x>=0)
         assert(y>=0)
