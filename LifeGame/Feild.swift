@@ -21,9 +21,16 @@ final class Feild {
                 case .second: self = .first
             }
         }
+        
+        var backing: CurrentBuffer {
+            switch self {
+                case .first: return .second
+                case .second: return .first
+            }
+        }
     }
     private var currentBuffer = CurrentBuffer.first
-    private var nextIndex: Int { (currentBuffer.rawValue + 1) % 2 }
+    private var nextIndex: Int { currentBuffer.backing.rawValue }
 
     var storage: [[Bool]] { buffer[currentBuffer.rawValue] }
 
