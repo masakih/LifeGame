@@ -1,0 +1,108 @@
+//
+//  FieldView.swift
+//  LifeGame
+//
+//  Created by Hori,Masaki on 2025/12/18.
+//
+
+import Cocoa
+
+final class FieldView: NSView {
+    
+    private(set) var width: Int
+    private(set) var height: Int
+    
+    private var cells: [Cell] = []
+    
+    private var cellSize = 15
+    
+    init(width: Int, height: Int) {
+        
+        self.width = width
+        self.height = height
+        
+        super.init(
+            frame: NSRect(
+                origin: .zero,
+                size: CGSize(
+                    width: width * cellSize,
+                    height: height * cellSize
+                )
+            )
+        )
+        
+        self.setupCells()
+    }
+    
+    required init?(coder: NSCoder) {
+        
+        self.width = 8
+        self.height = 8
+        
+        super.init(
+            frame: NSRect(
+                origin: .zero,
+                size: CGSize(
+                    width: width * cellSize,
+                    height: height * cellSize
+                )
+            )
+        )
+        
+        self.setupCells()
+    }
+    
+    override func draw(_ dirtyRect: NSRect) {
+        
+        super.draw(dirtyRect)
+
+        (0..<height).forEach { y in
+            (0..<width).forEach { x in
+                
+                let rect = cellRect(x: x, y: y)
+                if rect.intersects(dirtyRect) {
+                    
+                    cells[y * width + x].draw(withFrame: rect, in: self)
+                }
+            }
+        }
+    }
+    
+    override func mouseDown(with event: NSEvent) {
+        
+        let mouse = self.convert(event.locationInWindow, from: nil)
+        let x = Int(Int(mouse.x) / cellSize)
+        let y = Int(Int(mouse.y) / cellSize)
+        
+        // 外周はoff固定
+        guard x > 0, x < self.width - 1, y > 0, y < self.height - 1 else {
+            
+            return
+        }
+        
+        cells[y * width + x].setNextState()
+        
+        self.setNeedsDisplay(cellRect(x: x, y: y))
+    }
+    
+    private func cellRect(x: Int, y: Int) -> NSRect {
+        
+        NSRect(
+            x: CGFloat(cellSize * x),
+            y: CGFloat(cellSize * y),
+            width: CGFloat(cellSize),
+            height: CGFloat(cellSize))
+    }
+    
+    private func setupCells() {
+        
+        self.cells.removeAll()
+                
+        (0..<self.height).forEach { _ in
+            (0..<self.width).forEach { _ in
+                
+                self.cells.append(Cell())
+            }
+        }
+    }
+}
