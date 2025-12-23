@@ -6,6 +6,7 @@
 //
 
 import Cocoa
+import Combine
 
 final class FieldView: NSView {
     
@@ -20,6 +21,7 @@ final class FieldView: NSView {
     private var cells: [Cell] = []
     
     private var cellSize = 15
+    private var subject: PassthroughSubject<(Int, Int), Never> = .init()
     
     init(width: Int, height: Int) {
         
@@ -80,6 +82,9 @@ final class FieldView: NSView {
         cells[y * width + x].setNextState()
         
         self.setNeedsDisplay(cellRect(x: x, y: y))
+        
+        self.subject.send((x, y))
+    }
     
     func setStateOn(x: Int, y: Int, state: NSControl.StateValue) {
         
@@ -107,6 +112,11 @@ final class FieldView: NSView {
         }
         
         self.setNeedsDisplay(changedCellRect)
+    }
+    
+    func publisher() -> AnyPublisher<(Int, Int), Never> {
+        
+        subject.eraseToAnyPublisher()
     }
     
     private func cellRect(x: Int, y: Int) -> NSRect {
