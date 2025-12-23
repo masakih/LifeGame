@@ -9,6 +9,11 @@ import Cocoa
 
 final class FieldView: NSView {
     
+    enum PointState {
+        case on(Int, Int)
+        case off(Int, Int)
+    }
+    
     private(set) var width: Int
     private(set) var height: Int
     
@@ -83,6 +88,33 @@ final class FieldView: NSView {
         cells[y * width + x].setNextState()
         
         self.setNeedsDisplay(cellRect(x: x, y: y))
+    
+    func setStateOn(x: Int, y: Int, state: NSControl.StateValue) {
+        
+        cells[y * width + x].state = state
+        
+        self.setNeedsDisplay(cellRect(x: x, y: y))
+    }
+    
+    func setPointStates(states: [PointState]) {
+        
+        var changedCellRect = NSRect.zero
+        
+        states.forEach { state in
+            
+            switch state {
+                case let .on(x, y) where cells[y * width + x].state == .off:
+                    cells[y * width + x].state = .on
+                    changedCellRect = changedCellRect.union(self.cellRect(x: x, y: y))
+                case let .off(x, y) where cells[y * width + x].state == .on:
+                    cells[y * width + x].state = .off
+                    changedCellRect = changedCellRect.union(self.cellRect(x: x, y: y))
+                default:
+                    ()
+            }
+        }
+        
+        self.setNeedsDisplay(changedCellRect)
     }
     
     private func cellRect(x: Int, y: Int) -> NSRect {
