@@ -44,15 +44,7 @@ final class FieldView: NSView {
         self.width = 8
         self.height = 8
         
-        super.init(
-            frame: NSRect(
-                origin: .zero,
-                size: CGSize(
-                    width: width * cellSize,
-                    height: height * cellSize
-                )
-            )
-        )
+        super.init(coder: coder)
         
         self.setupCells()
     }
