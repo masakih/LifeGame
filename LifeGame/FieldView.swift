@@ -20,7 +20,8 @@ final class FieldView: NSView {
     
     private var cells: [Cell] = []
     
-    private var cellSize = 15
+    private var cellSize = 23
+    
     private var subject: PassthroughSubject<(Int, Int), Never> = .init()
     
     init(width: Int, height: Int) {
@@ -43,8 +44,8 @@ final class FieldView: NSView {
     
     required init?(coder: NSCoder) {
         
-        self.width = 8
-        self.height = 8
+        self.width = 30
+        self.height = 21
         
         super.init(coder: coder)
         
@@ -54,6 +55,9 @@ final class FieldView: NSView {
     override func draw(_ dirtyRect: NSRect) {
         
         super.draw(dirtyRect)
+        
+//        NSColor.red.setFill()
+//        self.bounds.fill()
 
         (0..<height).forEach { y in
             (0..<width).forEach { x in
