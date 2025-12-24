@@ -61,6 +61,12 @@ final class ViewController: NSViewController {
         
         field.grow()
     }
+    
+    @IBAction func reset(_ sender: Any) {
+        
+        field.reset()
+        fieldView.reset()
+    }
 
 
 }

@@ -118,6 +118,13 @@ final class FieldView: NSView {
         self.setNeedsDisplay(changedCellRect)
     }
     
+    func reset() {
+        
+        cells.forEach { $0.state = .off }
+        
+        self.setNeedsDisplay(self.bounds)
+    }
+    
     func publisher() -> AnyPublisher<(Int, Int), Never> {
         
         subject.eraseToAnyPublisher()

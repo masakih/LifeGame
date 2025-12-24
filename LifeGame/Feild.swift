@@ -12,7 +12,7 @@ final class Feild {
     private(set) var width: Int
     private(set) var height: Int
 
-    private var buffer: [[[Bool]]]
+    private var buffer: [[[Bool]]] = []
     
     // grow()によって変更されたセルをpublishする
     private var subject: PassthroughSubject<[(Int, Int)], Never> = .init()
@@ -46,6 +46,11 @@ final class Feild {
         self.width = width
         self.height = height
 
+        self.buildBuffer()
+    }
+    
+    private func buildBuffer() {
+        
         buffer = Array(
             repeating: Array(
                 repeating: Array(
@@ -126,6 +131,11 @@ final class Feild {
         currentBuffer.toggle()
         
         subject.send(changedCells)
+    }
+    
+    func reset() {
+        
+        self.buildBuffer()
     }
     
     /// 指定座標のOn/Offを切り替える
