@@ -709,22 +709,11 @@
                         <rect key="frame" x="0.0" y="0.0" width="480" height="270"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <customView fixedFrame="YES" id="fyH-PO-2c5" customClass="FieldView" customModule="LifeGame" customModuleProvider="target">
+                            <customView id="fyH-PO-2c5" customClass="FieldView" customModule="LifeGame" customModuleProvider="target">
                                 <rect key="frame" x="20" y="64" width="440" height="186"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             </customView>
-                            <button verticalHuggingPriority="750" fixedFrame="YES" id="cvc-Bn-wM9">
-                                <rect key="frame" x="136" y="20" width="56" height="24"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <buttonCell key="cell" type="push" title="Grow" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="gGz-zM-VO9">
-                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                    <font key="font" metaFont="system"/>
-                                </buttonCell>
-                                <connections>
-                                    <action selector="grow:" target="XfG-lQ-9wD" id="rPw-nd-KOM"/>
-                                </connections>
-                            </button>
-                            <button verticalHuggingPriority="750" fixedFrame="YES" id="mAY-NY-R2m">
+                            <button verticalHuggingPriority="750" id="mAY-NY-R2m">
                                 <rect key="frame" x="211" y="20" width="59" height="24"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <buttonCell key="cell" type="push" title="Reset" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="W3I-F2-BpE">
@@ -735,13 +724,27 @@
                                     <action selector="reset:" target="XfG-lQ-9wD" id="dMs-DH-0LT"/>
                                 </connections>
                             </button>
-                            <button verticalHuggingPriority="750" fixedFrame="YES" id="EaV-Hp-FKj">
-                                <rect key="frame" x="285" y="20" width="65" height="24"/>
+                            <button verticalHuggingPriority="750" id="EaV-Hp-FKj">
+                                <rect key="frame" x="282" y="20" width="82" height="24"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <buttonCell key="cell" type="push" title="Button" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Fuj-rL-u4j">
+                                <buttonCell key="cell" type="push" title="Randoom" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Fuj-rL-u4j">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="system"/>
                                 </buttonCell>
+                                <connections>
+                                    <action selector="random:" target="XfG-lQ-9wD" id="eWP-yp-pUK"/>
+                                </connections>
+                            </button>
+                            <button verticalHuggingPriority="750" id="cvc-Bn-wM9">
+                                <rect key="frame" x="143" y="20" width="56" height="24"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <buttonCell key="cell" type="push" title="Grow" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="gGz-zM-VO9">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="grow:" target="XfG-lQ-9wD" id="rPw-nd-KOM"/>
+                                </connections>
                             </button>
                         </subviews>
                     </view>

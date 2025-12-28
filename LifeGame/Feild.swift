@@ -133,9 +133,37 @@ final class Feild {
         subject.send(changedCells)
     }
     
+    
+    /// 全てをfalseにする。
     func reset() {
         
         self.buildBuffer()
+        
+        subject.send(
+            (1..<(width - 1)).flatMap { x in
+                (1..<(height - 1)).map { y in (x, y) }
+            }
+        )
+    }
+    
+    /// リセットしランダムに配置する
+    /// - Parameter n: 粗密度。大きいほど粗。
+    func random(_ n: Int) {
+        
+        self.buildBuffer()
+        
+        subject.send(
+            (1..<(width - 1)).flatMap { x in
+                (1..<(height - 1)).map { y in
+                    buffer[currentBuffer.rawValue][y][x] =
+                    switch (1...n).randomElement()! {
+                        case 3: true
+                        default: false
+                    }
+                    return (x, y)
+                }
+            }
+        )
     }
     
     /// 指定座標のOn/Offを切り替える

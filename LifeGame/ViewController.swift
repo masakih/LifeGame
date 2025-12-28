@@ -12,7 +12,10 @@ final class ViewController: NSViewController {
     
     @IBOutlet weak var fieldView: FieldView!
     
-    var field = Feild(width: 30, height: 21)
+    var width = 30
+    var height = 21
+    
+    var field = Feild(width: 5, height: 5)
     
     private var cancellables: [AnyCancellable] = []
 
@@ -23,6 +26,8 @@ final class ViewController: NSViewController {
             
             fatalError("Main.storyboard に FieldView が見つかりません")
         }
+        
+        field = Feild(width: width, height: height)
         
         fieldView
             .publisher()
@@ -65,7 +70,11 @@ final class ViewController: NSViewController {
     @IBAction func reset(_ sender: Any) {
         
         field.reset()
-        fieldView.reset()
+    }
+    
+    @IBAction func random(_ sender: Any) {
+        
+        field.random(10)
     }
 
 
