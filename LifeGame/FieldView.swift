@@ -90,13 +90,6 @@ final class FieldView: NSView {
         self.subject.send((x, y))
     }
     
-    func setStateOn(x: Int, y: Int, state: NSControl.StateValue) {
-        
-        cells[y * width + x].state = state
-        
-        self.setNeedsDisplay(cellRect(x: x, y: y))
-    }
-    
     func setPointStates(states: [PointState]) {
         
         var changedCellRect = NSRect.zero
