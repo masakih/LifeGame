@@ -20,7 +20,7 @@ final class FieldView: NSView {
     
     private var cells: [Cell] = []
     
-    private var cellSize = 23
+    private(set) var cellSize = 23
     
     private var subject: PassthroughSubject<(Int, Int), Never> = .init()
     
@@ -109,6 +109,14 @@ final class FieldView: NSView {
         }
         
         self.setNeedsDisplay(changedCellRect)
+    }
+    
+    func setSize(width: Int, height: Int) {
+        
+        self.width = width
+        self.height = height
+        
+        setupCells()
     }
     
     func reset() {

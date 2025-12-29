@@ -15,7 +15,31 @@ final class ViewController: NSViewController {
     var width = 30
     var height = 21
     
-    var field = Feild(width: 5, height: 5)
+    var field = Feild(width: 5, height: 5) {
+        
+        didSet {
+            field
+                .publisher()
+                .sink { [weak self] points in
+                    
+                    guard let self else { return }
+                    
+                    fieldView.setPointStates(
+                        states: points
+                            .map { (x, y) -> FieldView.PointState in
+                                switch self.field.storage[y][x] {
+                                    case true: .on(x, y)
+                                    case false: .off(x, y)
+                                }
+                            }
+                    )
+                }
+                .store(in: &self.cancellables)
+        }
+    }
+    
+    private var viewHolder: NSView!
+    private var resizeView: ResizeView!
     
     private var cancellables: [AnyCancellable] = []
 
@@ -31,27 +55,58 @@ final class ViewController: NSViewController {
         
         fieldView
             .publisher()
+            .receive(on: DispatchQueue.main)
             .sink { [weak self] (x, y) in
                 
                 self?.field.toggle(x, y)
             }
             .store(in: &self.cancellables)
         
-        field
-            .publisher()
-            .sink { [weak self] points in
+        NotificationCenter
+            .default
+            .publisher(
+                for: NSWindow.willStartLiveResizeNotification,
+                object: self.view.window
+            )
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] _ in
                 
                 guard let self else { return }
                 
-                fieldView.setPointStates(
-                    states: points
-                        .map { (x, y) -> FieldView.PointState in
-                            switch self.field.storage[y][x] {
-                                case true: .on(x, y)
-                                case false: .off(x, y)
-                            }
-                        }
+                self.resizeView = self.resizeView ?? ResizeView(cellSize: self.fieldView.cellSize)
+                self.resizeView.autoresizingMask = self.fieldView.autoresizingMask
+                self.resizeView.frame = self.fieldView.frame
+                
+                self.viewHolder = self.fieldView
+                self.view.replaceSubview(self.fieldView, with: self.resizeView)
+                
+            }
+            .store(in: &self.cancellables)
+        
+        NotificationCenter
+            .default
+            .publisher(
+                for: NSWindow.didEndLiveResizeNotification,
+                object: self.view.window)
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] _ in
+                
+                guard let self else { return }
+                
+                self.viewHolder.frame = self.resizeView.frame
+                self.view.replaceSubview(self.resizeView, with: self.viewHolder)
+                
+                let newSize = self.resizeView.currentSize()
+                self.fieldView.setSize(
+                    width: newSize.w,
+                    height: newSize.h
                 )
+                self.field = Feild(
+                    width: newSize.w,
+                    height: newSize.h
+                )
+                                
+                self.viewHolder = nil
             }
             .store(in: &self.cancellables)
     }
@@ -74,7 +129,7 @@ final class ViewController: NSViewController {
     
     @IBAction func random(_ sender: Any) {
         
-        field.random(10)
+        field.random(5)
     }
 
 
