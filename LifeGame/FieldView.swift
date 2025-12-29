@@ -133,11 +133,19 @@ final class FieldView: NSView {
     
     private func cellRect(x: Int, y: Int) -> NSRect {
         
-        NSRect(
-            x: CGFloat(cellSize * x),
-            y: CGFloat(cellSize * y),
+        /// TODO: 効率悪い。
+        let cellFrameSize = NSSize(width: self.cellSize * width, height: self.cellSize * height)
+        let (wMergin, hMergin) = (
+            (self.bounds.size.width - cellFrameSize.width) / 2,
+            (self.bounds.size.height - cellFrameSize.height) / 2
+        )
+        
+        return NSRect(
+            x: wMergin + CGFloat(cellSize * x),
+            y: hMergin + CGFloat(cellSize * y),
             width: CGFloat(cellSize),
-            height: CGFloat(cellSize))
+            height: CGFloat(cellSize)
+        )
     }
     
     private func setupCells() {
