@@ -62,6 +62,24 @@ final class ViewController: NSViewController {
             }
             .store(in: &self.cancellables)
         
+        fieldView.postsFrameChangedNotifications = true
+        NotificationCenter
+            .default
+            .publisher(
+                for: NSView.frameDidChangeNotification,
+                object: self.fieldView
+            )
+            .sink { [weak self] _ in
+                
+                guard let self else { return }
+                
+                self.width = self.fieldView.width
+                self.height = self.fieldView.height
+                
+                self.field = Feild(width: self.fieldView.width, height: self.fieldView.height)
+            }
+            .store(in: &self.cancellables)
+        
         NotificationCenter
             .default
             .publisher(
@@ -95,17 +113,6 @@ final class ViewController: NSViewController {
                 
                 self.viewHolder.frame = self.resizeView.frame
                 self.view.replaceSubview(self.resizeView, with: self.viewHolder)
-                
-                let newSize = self.resizeView.currentSize()
-                self.fieldView.setSize(
-                    width: newSize.w,
-                    height: newSize.h
-                )
-                self.field = Feild(
-                    width: newSize.w,
-                    height: newSize.h
-                )
-                                
                 self.viewHolder = nil
             }
             .store(in: &self.cancellables)
@@ -131,7 +138,5 @@ final class ViewController: NSViewController {
         
         field.random(5)
     }
-
-
 }
 

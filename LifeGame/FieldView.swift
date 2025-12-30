@@ -49,6 +49,8 @@ final class FieldView: NSView {
         
         super.init(coder: coder)
         
+        (self.width, self.height) = self.matrixSize(self.frame.size)
+        
         self.setupCells()
     }
     
@@ -68,6 +70,19 @@ final class FieldView: NSView {
                     cells[y * width + x].draw(withFrame: rect, in: self)
                 }
             }
+        }
+    }
+    
+    override var frame: NSRect {
+        
+        willSet(newValue) {
+                        
+            (self.width, self.height) = self.matrixSize(newValue.size)
+        }
+        
+        didSet {
+            
+            self.setupCells()
         }
     }
     
@@ -111,14 +126,6 @@ final class FieldView: NSView {
         self.setNeedsDisplay(changedCellRect)
     }
     
-    func setSize(width: Int, height: Int) {
-        
-        self.width = width
-        self.height = height
-        
-        setupCells()
-    }
-    
     func reset() {
         
         cells.forEach { $0.state = .off }
@@ -129,6 +136,14 @@ final class FieldView: NSView {
     func publisher() -> AnyPublisher<(Int, Int), Never> {
         
         subject.eraseToAnyPublisher()
+    }
+    
+    private func matrixSize(_ frameSize: NSSize) -> (w: Int, h: Int) {
+        
+        let w = Int(floor(Double(frameSize.width) / Double(self.cellSize)))
+        let h = Int(floor(Double(frameSize.height) / Double(self.cellSize)))
+        
+        return (w, h)
     }
     
     private func cellRect(x: Int, y: Int) -> NSRect {
