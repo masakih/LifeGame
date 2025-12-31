@@ -41,6 +41,9 @@ final class ViewController: NSViewController {
     private var viewHolder: NSView!
     private var resizeView: ResizeView!
     
+    private var growTimer: AnyPublisher<Void, Never>?
+    private var growTimerCanceler: AnyCancellable?
+    
     private var cancellables: [AnyCancellable] = []
 
     override func viewDidLoad() {
@@ -137,6 +140,31 @@ final class ViewController: NSViewController {
     @IBAction func random(_ sender: Any) {
         
         field.random(5)
+    }
+    
+    @IBAction func growTimer(_ sender: Any) {
+        
+        guard let button = sender as? NSButton else {
+            fatalError("Sender not an NSButton")
+        }
+        
+        if growTimerCanceler == nil {
+            
+            growTimerCanceler = Timer
+                .publish(every: 0.3, on: .main, in: .default)
+                .autoconnect()
+                .sink { [weak self] _ in
+                    
+                    self?.field.grow()
+                }
+            button.title = "Stop"
+        }
+        else {
+            growTimerCanceler?.cancel()
+            growTimerCanceler = nil
+            
+            button.title = "Grow"
+        }
     }
 }
 
