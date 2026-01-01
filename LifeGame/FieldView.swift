@@ -22,6 +22,8 @@ final class FieldView: NSView {
     
     private(set) var cellSize = 7
     
+    private var cellFrame: NSRect = .zero
+    
     private var subject: PassthroughSubject<(Int, Int), Never> = .init()
     
     init(width: Int, height: Int) {
@@ -40,6 +42,7 @@ final class FieldView: NSView {
         )
         
         self.setupCells()
+        self.setupCellFrame()
     }
     
     required init?(coder: NSCoder) {
@@ -52,6 +55,7 @@ final class FieldView: NSView {
         (self.width, self.height) = self.matrixSize(self.frame.size)
         
         self.setupCells()
+        self.setupCellFrame()
     }
     
     override func draw(_ dirtyRect: NSRect) {
@@ -62,16 +66,7 @@ final class FieldView: NSView {
 //        self.bounds.fill()
         
         NSColor.black.setStroke()
-        /// TODO: 効率悪い。
-        let cellFrameSize = NSSize(width: self.cellSize * width, height: self.cellSize * height)
-        let (wMergin, hMergin) = (
-            (self.bounds.size.width - cellFrameSize.width) / 2,
-            (self.bounds.size.height - cellFrameSize.height) / 2
-        )
-        let bezier = NSBezierPath(rect:
-                                    NSRect(origin: CGPoint(x: wMergin, y: hMergin),
-                                           size: cellFrameSize)
-        )
+        let bezier = NSBezierPath(rect: self.cellFrame)
         bezier.stroke()
 
         (0..<height).forEach { y in
@@ -96,6 +91,7 @@ final class FieldView: NSView {
         didSet {
             
             self.setupCells()
+            self.setupCellFrame()
         }
     }
     
@@ -161,16 +157,9 @@ final class FieldView: NSView {
     
     private func cellRect(x: Int, y: Int) -> NSRect {
         
-        /// TODO: 効率悪い。
-        let cellFrameSize = NSSize(width: self.cellSize * width, height: self.cellSize * height)
-        let (wMergin, hMergin) = (
-            (self.bounds.size.width - cellFrameSize.width) / 2,
-            (self.bounds.size.height - cellFrameSize.height) / 2
-        )
-        
-        return NSRect(
-            x: wMergin + CGFloat(cellSize * x),
-            y: hMergin + CGFloat(cellSize * y),
+        NSRect(
+            x: self.cellFrame.minX + CGFloat(cellSize * x),
+            y: self.cellFrame.minY + CGFloat(cellSize * y),
             width: CGFloat(cellSize),
             height: CGFloat(cellSize)
         )
@@ -186,5 +175,19 @@ final class FieldView: NSView {
                 self.cells.append(Cell())
             }
         }
+    }
+    
+    private func setupCellFrame() {
+        
+        let cellFrameSize = NSSize(width: self.cellSize * width, height: self.cellSize * height)
+        let (wMergin, hMergin) = (
+            (self.bounds.size.width - cellFrameSize.width) / 2,
+            (self.bounds.size.height - cellFrameSize.height) / 2
+        )
+        
+        self.cellFrame = NSRect(
+            origin: NSPoint(x: wMergin, y: hMergin),
+            size: cellFrameSize
+        )
     }
 }
