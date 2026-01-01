@@ -13,13 +13,19 @@ final class Cell: NSCell {
         
         switch state {
             case .on:
-                NSColor.black.setFill()
-                cellFrame.insetBy(dx: 1, dy: 1).fill()
-            case .off:
-                NSColor.black.set()
-                cellFrame.frame(withWidth: 1)
+                self.color.setFill()
+                cellFrame.insetBy(dx: 0.25, dy: 0.25).fill()
             default:
                 ()
+        }
+    }
+    
+    var color: NSColor {
+        get {
+            self.objectValue as? NSColor ?? .black
+        }
+        set {
+            self.objectValue = newValue
         }
     }
 }

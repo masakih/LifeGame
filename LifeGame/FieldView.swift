@@ -20,7 +20,7 @@ final class FieldView: NSView {
     
     private var cells: [Cell] = []
     
-    private(set) var cellSize = 23
+    private(set) var cellSize = 7
     
     private var subject: PassthroughSubject<(Int, Int), Never> = .init()
     
@@ -60,6 +60,19 @@ final class FieldView: NSView {
         
 //        NSColor.red.setFill()
 //        self.bounds.fill()
+        
+        NSColor.black.setStroke()
+        /// TODO: 効率悪い。
+        let cellFrameSize = NSSize(width: self.cellSize * width, height: self.cellSize * height)
+        let (wMergin, hMergin) = (
+            (self.bounds.size.width - cellFrameSize.width) / 2,
+            (self.bounds.size.height - cellFrameSize.height) / 2
+        )
+        let bezier = NSBezierPath(rect:
+                                    NSRect(origin: CGPoint(x: wMergin, y: hMergin),
+                                           size: cellFrameSize)
+        )
+        bezier.stroke()
 
         (0..<height).forEach { y in
             (0..<width).forEach { x in
