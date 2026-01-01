@@ -45,7 +45,7 @@ final class ViewController: NSViewController {
     private var growTimerCanceler: AnyCancellable?
     
     private var cancellables: [AnyCancellable] = []
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -64,6 +64,57 @@ final class ViewController: NSViewController {
                 self?.field.toggle(x, y)
             }
             .store(in: &self.cancellables)
+        
+        setupResizing()
+    }
+
+    override var representedObject: Any? {
+        didSet {
+        // Update the view, if already loaded.
+        }
+    }
+    
+    @IBAction func grow(_ sender: Any) {
+        
+        field.grow()
+    }
+    
+    @IBAction func reset(_ sender: Any) {
+        
+        field.reset()
+    }
+    
+    @IBAction func random(_ sender: Any) {
+        
+        field.random(5)
+    }
+    
+    @IBAction func growTimer(_ sender: Any) {
+        
+        guard let button = sender as? NSButton else {
+            fatalError("Sender not an NSButton")
+        }
+        
+        if growTimerCanceler == nil {
+            
+            growTimerCanceler = Timer
+                .publish(every: 0.3, on: .main, in: .default)
+                .autoconnect()
+                .sink { [weak self] _ in
+                    
+                    self?.field.grow()
+                }
+            button.title = "Stop"
+        }
+        else {
+            growTimerCanceler?.cancel()
+            growTimerCanceler = nil
+            
+            button.title = "Grow"
+        }
+    }
+    
+    private func setupResizing() {
         
         fieldView.postsFrameChangedNotifications = true
         NotificationCenter
@@ -119,52 +170,6 @@ final class ViewController: NSViewController {
                 self.viewHolder = nil
             }
             .store(in: &self.cancellables)
-    }
-
-    override var representedObject: Any? {
-        didSet {
-        // Update the view, if already loaded.
-        }
-    }
-    
-    @IBAction func grow(_ sender: Any) {
-        
-        field.grow()
-    }
-    
-    @IBAction func reset(_ sender: Any) {
-        
-        field.reset()
-    }
-    
-    @IBAction func random(_ sender: Any) {
-        
-        field.random(5)
-    }
-    
-    @IBAction func growTimer(_ sender: Any) {
-        
-        guard let button = sender as? NSButton else {
-            fatalError("Sender not an NSButton")
-        }
-        
-        if growTimerCanceler == nil {
-            
-            growTimerCanceler = Timer
-                .publish(every: 0.3, on: .main, in: .default)
-                .autoconnect()
-                .sink { [weak self] _ in
-                    
-                    self?.field.grow()
-                }
-            button.title = "Stop"
-        }
-        else {
-            growTimerCanceler?.cancel()
-            growTimerCanceler = nil
-            
-            button.title = "Grow"
-        }
     }
 }
 
