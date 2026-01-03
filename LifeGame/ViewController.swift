@@ -10,8 +10,16 @@ import Combine
 
 final class ViewController: NSViewController {
     
+    enum Setting {
+        case autoGrow(Bool)
+        case generation(Int)
+    }
+    
     @IBOutlet weak var fieldView: FieldView!
     
+    /// for CocoaBindings
+    @IBOutlet var settings: NSMutableDictionary! = [:]
+        
     var width = 30
     var height = 21
     
@@ -35,6 +43,13 @@ final class ViewController: NSViewController {
                     )
                 }
                 .store(in: &self.cancellables)
+            
+            field
+                .generationPublisher()
+                .sink { [weak self] generation in
+                    self?.setting(.generation(generation))
+                }
+                .store(in: &self.cancellables)
         }
     }
     
@@ -53,6 +68,9 @@ final class ViewController: NSViewController {
             
             fatalError("Main.storyboard に FieldView が見つかりません")
         }
+        
+        self.setting(.autoGrow(false))
+        self.setting(.generation(0))
         
         field = Feild(width: width, height: height)
         
@@ -105,13 +123,18 @@ final class ViewController: NSViewController {
                     self?.field.grow()
                 }
             button.title = "Stop"
+            
+            self.setting(.autoGrow(true))
         }
         else {
             growTimerCanceler?.cancel()
             growTimerCanceler = nil
             
-            button.title = "Grow"
+            button.title = "Start"
+            
+            self.setting(.autoGrow(false))
         }
+        
     }
     
     private func setupResizing() {
@@ -170,6 +193,16 @@ final class ViewController: NSViewController {
                 self.viewHolder = nil
             }
             .store(in: &self.cancellables)
+    }
+    
+    private func setting(_ value: Setting) {
+        
+        switch value {
+            case .autoGrow(let flag):
+                self.settings.setValue(flag, forKey: "autoGrow")
+            case .generation(let generation):
+                self.settings.setValue(generation, forKey: "generation")
+        }
     }
 }
 

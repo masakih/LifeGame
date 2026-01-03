@@ -8,6 +8,12 @@
 import Combine
 
 final class Feild {
+    
+    private(set) var generation: Int = 0 {
+        didSet {
+            self.generationSubject.send(generation)
+        }
+    }
 
     private(set) var width: Int
     private(set) var height: Int
@@ -16,6 +22,7 @@ final class Feild {
     
     // grow()によって変更されたセルをpublishする
     private var subject: PassthroughSubject<[(Int, Int)], Never> = .init()
+    private var generationSubject: PassthroughSubject<Int, Never> = .init()
 
     private enum CurrentBuffer: Int {
         case first = 0, second = 1
@@ -61,6 +68,8 @@ final class Feild {
             ),
             count: 2
         )
+        
+        self.generation = 0
     }
 
     private func topLeft(_ x: Int, _ y: Int) -> Bool {
@@ -131,6 +140,8 @@ final class Feild {
         currentBuffer.toggle()
         
         subject.send(changedCells)
+        
+        self.generation += 1
     }
     
     
@@ -190,6 +201,11 @@ final class Feild {
     func publisher() -> AnyPublisher<[(Int, Int)], Never> {
         
         subject.eraseToAnyPublisher()
+    }
+    
+    func generationPublisher() -> AnyPublisher<Int, Never> {
+        
+        generationSubject.eraseToAnyPublisher()
     }
 
 }
