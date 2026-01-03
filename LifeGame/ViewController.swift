@@ -26,6 +26,8 @@ final class ViewController: NSViewController {
     var field = Feild(width: 5, height: 5) {
         
         didSet {
+            fieldCacellables = []
+            
             field
                 .publisher()
                 .sink { [weak self] points in
@@ -42,14 +44,14 @@ final class ViewController: NSViewController {
                             }
                     )
                 }
-                .store(in: &self.cancellables)
+                .store(in: &self.fieldCacellables)
             
             field
                 .generationPublisher()
                 .sink { [weak self] generation in
                     self?.setting(.generation(generation))
                 }
-                .store(in: &self.cancellables)
+                .store(in: &self.fieldCacellables)
         }
     }
     
@@ -60,6 +62,7 @@ final class ViewController: NSViewController {
     private var growTimerCanceler: AnyCancellable?
     
     private var cancellables: [AnyCancellable] = []
+    private var fieldCacellables: [AnyCancellable] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
