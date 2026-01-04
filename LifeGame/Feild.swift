@@ -111,8 +111,7 @@ final class Feild {
             case (false, 3):  return true
             case (true, 2...3): return true
 
-            case (false, _): return false
-            case (true, _): return false
+            default: return false
         }
     }
     
