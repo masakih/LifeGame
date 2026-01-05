@@ -52,6 +52,8 @@ final class ViewController: NSViewController {
                     self?.setting(.generation(generation))
                 }
                 .store(in: &self.fieldCacellables)
+            
+            setting(.generation(0))
         }
     }
     
