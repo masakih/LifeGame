@@ -26,25 +26,6 @@ final class FieldView: NSView {
     
     private var subject: PassthroughSubject<(Int, Int), Never> = .init()
     
-    init(width: Int, height: Int) {
-        
-        self.width = width
-        self.height = height
-        
-        super.init(
-            frame: NSRect(
-                origin: .zero,
-                size: CGSize(
-                    width: width * cellSize,
-                    height: height * cellSize
-                )
-            )
-        )
-        
-        self.setupCells()
-        self.setupCellFrame()
-    }
-    
     required init?(coder: NSCoder) {
         
         self.width = 30
