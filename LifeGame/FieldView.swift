@@ -116,6 +116,23 @@ final class FieldView: NSView {
         self.setNeedsDisplay(changedCellRect)
     }
     
+    func setCellSize(size: Int) -> (w: Int, h: Int) {
+        
+        guard size >= 3, size <= 20 else {
+            
+            return (width, height)
+        }
+        
+        cellSize = size
+        
+        (self.width, self.height) = self.matrixSize(self.frame.size)
+        self.setupCells()
+        self.setupCellFrame()
+        self.setNeedsDisplay(self.bounds)
+                
+        return (width, height)
+    }
+    
     func reset() {
         
         cells.forEach { $0.state = .off }

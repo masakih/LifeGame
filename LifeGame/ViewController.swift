@@ -13,6 +13,7 @@ final class ViewController: NSViewController {
     enum Setting {
         case autoGrow(Bool)
         case generation(Int)
+        case cellSize(Int)
     }
     
     @IBOutlet weak var fieldView: FieldView!
@@ -77,6 +78,9 @@ final class ViewController: NSViewController {
         self.setting(.autoGrow(false))
         self.setting(.generation(0))
         
+        self.settings.setValue(3, forKey: "cellMinSize")
+        self.settings.setValue(20, forKey: "cellMaxSize")
+
         field = Feild(width: width, height: height)
         
         fieldView
@@ -140,6 +144,14 @@ final class ViewController: NSViewController {
             self.setting(.autoGrow(false))
         }
         
+    }
+    
+    @IBAction func changeCellSize(_ sender: Any) {
+        
+        guard let c = sender as? NSControl else {
+            return
+        }
+        self.setting(.cellSize(c.integerValue))
     }
     
     private func setupResizing() {
@@ -207,6 +219,11 @@ final class ViewController: NSViewController {
                 self.settings.setValue(flag, forKey: "autoGrow")
             case .generation(let generation):
                 self.settings.setValue(generation, forKey: "generation")
+            case .cellSize(let size):
+                self.settings.setValue(size, forKey: "cellSize")
+                UserDefaults.standard.setValue(size, forKey: "cellSize")
+                (self.width, self.height) = fieldView.setCellSize(size: size)
+                field = Feild(width: self.width, height: self.height)
         }
     }
 }

@@ -706,15 +706,31 @@
             <objects>
                 <viewController id="XfG-lQ-9wD" customClass="ViewController" customModule="LifeGame" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" id="m2S-Jp-Qdl">
-                        <rect key="frame" x="0.0" y="0.0" width="480" height="270"/>
+                        <rect key="frame" x="0.0" y="0.0" width="619" height="270"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <customView id="fyH-PO-2c5" customClass="FieldView" customModule="LifeGame" customModuleProvider="target">
-                                <rect key="frame" x="20" y="64" width="440" height="186"/>
+                                <rect key="frame" x="7" y="64" width="604" height="200"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             </customView>
+                            <button verticalHuggingPriority="750" id="cvc-Bn-wM9">
+                                <rect key="frame" x="307" y="20" width="56" height="24"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
+                                <buttonCell key="cell" type="push" title="Grow" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="gGz-zM-VO9">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="grow:" target="XfG-lQ-9wD" id="rPw-nd-KOM"/>
+                                    <binding destination="Tdt-nx-t1X" name="enabled" keyPath="content.autoGrow" id="Yfy-bw-Uv2">
+                                        <dictionary key="options">
+                                            <string key="NSValueTransformerName">NSNegateBoolean</string>
+                                        </dictionary>
+                                    </binding>
+                                </connections>
+                            </button>
                             <button verticalHuggingPriority="750" id="mAY-NY-R2m">
-                                <rect key="frame" x="236" y="20" width="59" height="24"/>
+                                <rect key="frame" x="375" y="20" width="59" height="24"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
                                 <buttonCell key="cell" type="push" title="Reset" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="W3I-F2-BpE">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
@@ -730,7 +746,7 @@
                                 </connections>
                             </button>
                             <button verticalHuggingPriority="750" id="EaV-Hp-FKj">
-                                <rect key="frame" x="307" y="20" width="82" height="24"/>
+                                <rect key="frame" x="446" y="20" width="82" height="24"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
                                 <buttonCell key="cell" type="push" title="Randoom" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Fuj-rL-u4j">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
@@ -746,7 +762,7 @@
                                 </connections>
                             </button>
                             <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="wpS-Xf-cOS">
-                                <rect key="frame" x="401" y="20" width="54" height="24"/>
+                                <rect key="frame" x="540" y="20" width="54" height="24"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
                                 <buttonCell key="cell" type="push" title="Start" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="GmW-Zy-hh2">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
@@ -760,7 +776,7 @@ DQ
                                 </connections>
                             </button>
                             <textField focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="mhn-Af-Oyp">
-                                <rect key="frame" x="20" y="24" width="126" height="16"/>
+                                <rect key="frame" x="18" y="24" width="126" height="16"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <textFieldCell key="cell" lineBreakMode="clipping" title="Generations: 99999" id="vAb-1f-P1g">
                                     <font key="font" metaFont="system"/>
@@ -775,22 +791,38 @@ DQ
                                     </binding>
                                 </connections>
                             </textField>
-                            <button verticalHuggingPriority="750" id="cvc-Bn-wM9">
-                                <rect key="frame" x="168" y="20" width="56" height="24"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
-                                <buttonCell key="cell" type="push" title="Grow" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="gGz-zM-VO9">
-                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                            <textField focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="bOL-nC-Cfb">
+                                <rect key="frame" x="167" y="24" width="34" height="16"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <textFieldCell key="cell" lineBreakMode="clipping" title="Size:" id="IwK-zX-G0X">
                                     <font key="font" metaFont="system"/>
-                                </buttonCell>
+                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                            </textField>
+                            <stepper horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="aiC-Q5-y5d">
+                                <rect key="frame" x="233" y="19" width="20" height="26"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <stepperCell key="cell" continuous="YES" alignment="left" maxValue="100" id="aaU-y3-6E3"/>
                                 <connections>
-                                    <action selector="grow:" target="XfG-lQ-9wD" id="rPw-nd-KOM"/>
-                                    <binding destination="Tdt-nx-t1X" name="enabled" keyPath="content.autoGrow" id="Yfy-bw-Uv2">
-                                        <dictionary key="options">
-                                            <string key="NSValueTransformerName">NSNegateBoolean</string>
-                                        </dictionary>
-                                    </binding>
+                                    <action selector="changeCellSize:" target="XfG-lQ-9wD" id="Sza-zI-bZ5"/>
+                                    <binding destination="Tdt-nx-t1X" name="maxValue" keyPath="content.cellMaxSize" id="5Ta-pB-0ph"/>
+                                    <binding destination="Tdt-nx-t1X" name="minValue" keyPath="content.cellMinSize" previousBinding="5Ta-pB-0ph" id="IDL-YS-5BO"/>
+                                    <binding destination="Tdt-nx-t1X" name="value" keyPath="content.cellSize" previousBinding="IDL-YS-5BO" id="mZH-09-Uln"/>
                                 </connections>
-                            </button>
+                            </stepper>
+                            <textField focusRingType="none" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="j9l-0w-LZt">
+                                <rect key="frame" x="203" y="20" width="28" height="24"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" borderStyle="bezel" alignment="right" title="20" drawsBackground="YES" id="aNT-b7-3x2">
+                                    <font key="font" metaFont="system"/>
+                                    <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                                <connections>
+                                    <binding destination="Tdt-nx-t1X" name="value" keyPath="content.cellSize" id="euH-Qw-1bF"/>
+                                </connections>
+                            </textField>
                         </subviews>
                     </view>
                     <connections>
@@ -804,7 +836,7 @@ DQ
                     </connections>
                 </objectController>
             </objects>
-            <point key="canvasLocation" x="75" y="655"/>
+            <point key="canvasLocation" x="5.5" y="655"/>
         </scene>
     </scenes>
 </document>
