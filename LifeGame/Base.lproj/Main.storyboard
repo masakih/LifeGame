@@ -806,6 +806,11 @@ DQ
                                 <stepperCell key="cell" continuous="YES" alignment="left" maxValue="100" id="aaU-y3-6E3"/>
                                 <connections>
                                     <action selector="changeCellSize:" target="XfG-lQ-9wD" id="Sza-zI-bZ5"/>
+                                    <binding destination="Tdt-nx-t1X" name="enabled" keyPath="content.autoGrow" id="d2q-PO-rrZ">
+                                        <dictionary key="options">
+                                            <string key="NSValueTransformerName">NSNegateBoolean</string>
+                                        </dictionary>
+                                    </binding>
                                     <binding destination="Tdt-nx-t1X" name="maxValue" keyPath="content.cellMaxSize" id="5Ta-pB-0ph"/>
                                     <binding destination="Tdt-nx-t1X" name="minValue" keyPath="content.cellMinSize" previousBinding="5Ta-pB-0ph" id="IDL-YS-5BO"/>
                                     <binding destination="Tdt-nx-t1X" name="value" keyPath="content.cellSize" previousBinding="IDL-YS-5BO" id="mZH-09-Uln"/>
