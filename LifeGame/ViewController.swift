@@ -14,6 +14,8 @@ final class ViewController: NSViewController {
         case autoGrow(Bool)
         case generation(Int)
         case cellSize(Int)
+        case maxCellSize(Int)
+        case minCellSize(Int)
     }
     
     @IBOutlet weak var fieldView: FieldView!
@@ -155,8 +157,8 @@ final class ViewController: NSViewController {
         self.setting(.autoGrow(false))
         self.setting(.generation(0))
         
-        self.settings.setValue(3, forKey: "cellMinSize")
-        self.settings.setValue(20, forKey: "cellMaxSize")
+        self.setting(.maxCellSize(20))
+        self.setting(.minCellSize(3))
         self.setting(.cellSize(self.fieldView.cellSize))
     }
     
@@ -230,6 +232,11 @@ final class ViewController: NSViewController {
                 UserDefaults.standard.setValue(size, forKey: "cellSize")
                 (self.width, self.height) = fieldView.setCellSize(size: size)
                 field = Feild(width: self.width, height: self.height)
+            case .maxCellSize(let max):
+                self.settings.setValue(max, forKey: "cellMaxSize")
+            case .minCellSize(let min):
+                self.settings.setValue(min, forKey: "cellMinSize")
+
         }
     }
 }
