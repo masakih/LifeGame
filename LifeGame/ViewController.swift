@@ -75,11 +75,7 @@ final class ViewController: NSViewController {
             fatalError("Main.storyboard に FieldView が見つかりません")
         }
         
-        self.setting(.autoGrow(false))
-        self.setting(.generation(0))
-        
-        self.settings.setValue(3, forKey: "cellMinSize")
-        self.settings.setValue(20, forKey: "cellMaxSize")
+        cocoaBindingsSetup()
 
         field = Feild(width: width, height: height)
         
@@ -152,6 +148,16 @@ final class ViewController: NSViewController {
             return
         }
         self.setting(.cellSize(c.integerValue))
+    }
+    
+    func cocoaBindingsSetup() {
+        
+        self.setting(.autoGrow(false))
+        self.setting(.generation(0))
+        
+        self.settings.setValue(3, forKey: "cellMinSize")
+        self.settings.setValue(20, forKey: "cellMaxSize")
+        self.setting(.cellSize(self.fieldView.cellSize))
     }
     
     private func setupResizing() {
