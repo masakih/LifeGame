@@ -20,6 +20,8 @@ final class ViewController: NSViewController {
     
     @IBOutlet weak var fieldView: FieldView!
     
+    @IBOutlet weak var startButton: NSButton!
+    
     /// for CocoaBindings
     @IBOutlet var settings: NSMutableDictionary! = [:]
         
@@ -116,10 +118,6 @@ final class ViewController: NSViewController {
     
     @IBAction func growTimer(_ sender: Any) {
         
-        guard let button = sender as? NSButton else {
-            fatalError("Sender not an NSButton")
-        }
-        
         if growTimerCanceler == nil {
             
             growTimerCanceler = Timer
@@ -129,7 +127,7 @@ final class ViewController: NSViewController {
                     
                     self?.field.grow()
                 }
-            button.title = "Stop"
+            startButton.title = "Stop"
             
             self.setting(.autoGrow(true))
         }
@@ -137,7 +135,7 @@ final class ViewController: NSViewController {
             growTimerCanceler?.cancel()
             growTimerCanceler = nil
             
-            button.title = "Start"
+            startButton.title = "Start"
             
             self.setting(.autoGrow(false))
         }
@@ -150,6 +148,20 @@ final class ViewController: NSViewController {
             return
         }
         self.setting(.cellSize(c.integerValue))
+    }
+    
+    @IBAction func biggerCell(_ sender: Any) {
+        
+        let current = self.fieldView.cellSize
+        
+        self.setting(.cellSize(current + 1))
+    }
+    
+    @IBAction func smallerCell(_ sender: Any) {
+        
+        let current = self.fieldView.cellSize
+        
+        self.setting(.cellSize(current - 1))
     }
     
     func cocoaBindingsSetup() {
@@ -241,3 +253,50 @@ final class ViewController: NSViewController {
     }
 }
 
+extension ViewController: NSMenuItemValidation {
+    
+    func validateMenuItem(_ menuItem: NSMenuItem) -> Bool {
+        
+        guard let flag = self.settings["autoGrow"] as? Bool else {
+            
+            return false
+        }
+        
+        switch menuItem.action {
+            case #selector(biggerCell):
+                if let l = self.settings["cellMaxSize"] as? Int,
+                   self.fieldView.cellSize >= l {
+                    
+                    return false
+                }
+                return !flag
+                
+            case #selector(smallerCell):
+                
+                if let s = self.settings["cellMinSize"] as? Int,
+                   self.fieldView.cellSize <= s {
+                    
+                    return false
+                }
+                return !flag
+                
+            case #selector(grow),
+                #selector(reset),
+                #selector(random):
+                
+                return !flag
+                
+            case #selector(growTimer(_:)):
+                if flag {
+                    menuItem.title = "Stop"
+                }
+                else {
+                    menuItem.title = "Start"
+                }
+                return true
+                
+            default:
+                return false
+        }
+    }
+}
