@@ -25,9 +25,6 @@ class ResizeView: NSView {
     override func draw(_ dirtyRect: NSRect) {
         super.draw(dirtyRect)
         
-        NSColor.lightGray.setStroke()
-        NSBezierPath(rect: bounds).stroke()
-        
         let size = self.currentSize()
         let text = "\(size.w) X \(size.h)"
         let attributes: [NSAttributedString.Key: Any] = [
