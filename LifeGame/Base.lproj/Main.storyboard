@@ -210,7 +210,7 @@ DQ
 </string>
                                             <modifierMask key="keyEquivalentModifierMask"/>
                                             <connections>
-                                                <action selector="growTimer:" target="Ady-hI-5gd" id="Uxh-GH-uhL"/>
+                                                <action selector="autoGrow:" target="Ady-hI-5gd" id="Uxh-GH-uhL"/>
                                             </connections>
                                         </menuItem>
                                         <menuItem title="Grow" keyEquivalent="g" id="bRL-4L-MLG">
@@ -318,7 +318,7 @@ DQ
                                 </toolbarItem>
                                 <toolbarItem implicitItemIdentifier="E019374E-ED88-44A0-B3E1-BC53E283533A" label="Start" paletteLabel="Start" toolTip="Start" tag="-1" image="NSTouchBarPlayTemplate" bordered="YES" sizingBehavior="auto" id="mRK-zb-KXZ">
                                     <connections>
-                                        <action selector="growTimer:" target="Oky-zY-oP4" id="Tck-jY-NZb"/>
+                                        <action selector="autoGrow:" target="Oky-zY-oP4" id="Tck-jY-NZb"/>
                                     </connections>
                                 </toolbarItem>
                                 <toolbarItem implicitItemIdentifier="NSToolbarSpaceItem" id="opu-pM-LuH"/>

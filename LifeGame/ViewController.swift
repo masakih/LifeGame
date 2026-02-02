@@ -108,7 +108,7 @@ final class ViewController: NSViewController {
         field.random(5)
     }
     
-    @IBAction func growTimer(_ sender: Any) {
+    @IBAction func autoGrow(_ sender: Any) {
         
         if growTimerCanceler == nil {
             
@@ -314,7 +314,7 @@ extension ViewController: NSMenuItemValidation, NSToolbarItemValidation {
                 
                 return (!flag, nil)
                 
-            case #selector(growTimer(_:)):
+            case #selector(autoGrow):
                 if flag {
                     return (true, "Stop")
                 }
