@@ -42,13 +42,6 @@ final class FieldView: NSView {
     override func draw(_ dirtyRect: NSRect) {
         
         super.draw(dirtyRect)
-        
-//        NSColor.red.setFill()
-//        self.bounds.fill()
-        
-        NSColor.black.setStroke()
-        let bezier = NSBezierPath(rect: self.cellFrame)
-        bezier.stroke()
 
         (0..<height).forEach { y in
             (0..<width).forEach { x in
