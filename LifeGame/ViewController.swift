@@ -92,12 +92,6 @@ final class ViewController: NSViewController {
         
         setupResizing()
     }
-
-    override var representedObject: Any? {
-        didSet {
-        // Update the view, if already loaded.
-        }
-    }
     
     @IBAction func grow(_ sender: Any) {
         
