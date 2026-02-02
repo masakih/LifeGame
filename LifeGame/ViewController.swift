@@ -131,14 +131,6 @@ final class ViewController: NSViewController {
         
     }
     
-    @IBAction func changeCellSize(_ sender: Any) {
-        
-        guard let c = sender as? NSControl else {
-            return
-        }
-        self.setting(.cellSize(c.integerValue))
-    }
-    
     @IBAction func biggerCell(_ sender: Any) {
         
         let current = self.fieldView.cellSize
