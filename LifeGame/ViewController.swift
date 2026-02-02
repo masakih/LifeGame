@@ -19,9 +19,7 @@ final class ViewController: NSViewController {
     }
     
     @IBOutlet weak var fieldView: FieldView!
-    
-    @IBOutlet weak var startButton: NSButton!
-    
+        
     /// for CocoaBindings
     @IBOutlet var settings: NSMutableDictionary! = [:]
         
@@ -127,16 +125,13 @@ final class ViewController: NSViewController {
                     
                     self?.field.grow()
                 }
-            startButton.title = "Stop"
             
             self.setting(.autoGrow(true))
         }
         else {
             growTimerCanceler?.cancel()
             growTimerCanceler = nil
-            
-            startButton.title = "Start"
-            
+                        
             self.setting(.autoGrow(false))
         }
         
@@ -253,50 +248,89 @@ final class ViewController: NSViewController {
     }
 }
 
-extension ViewController: NSMenuItemValidation {
+extension ViewController: NSMenuItemValidation, NSToolbarItemValidation {
     
     func validateMenuItem(_ menuItem: NSMenuItem) -> Bool {
         
-        guard let flag = self.settings["autoGrow"] as? Bool else {
-            
+        guard let action = menuItem.action else {
             return false
         }
         
-        switch menuItem.action {
+        let (flag, title) = validateAction(action)
+        
+        title.map { menuItem.title = $0 }
+        
+        return flag
+    }
+    
+    func validateToolbarItem(_ item: NSToolbarItem) -> Bool {
+        
+        guard let action = item.action else {
+            return false
+        }
+                        
+        let (flag, title) = validateAction(action)
+        
+        switch title {
+            case "Start":
+                item.image = NSImage(
+                    systemSymbolName: "play.fill",
+                    accessibilityDescription: nil
+                )
+            case "Stop":
+                item.image = NSImage(
+                    systemSymbolName: "pause.fill",
+                    accessibilityDescription: nil
+                )
+            default:
+                ()
+        }
+        
+        return flag
+    }
+    
+    func validateAction(_ action: Selector) -> (flag: Bool, title: String?) {
+        
+        guard let flag = self.settings["autoGrow"] as? Bool else {
+            
+            return (false, nil)
+        }
+        
+        switch action {
             case #selector(biggerCell):
                 if let l = self.settings["cellMaxSize"] as? Int,
                    self.fieldView.cellSize >= l {
                     
-                    return false
+                    return (false, nil)
                 }
-                return !flag
+                return (!flag, nil)
                 
             case #selector(smallerCell):
                 
                 if let s = self.settings["cellMinSize"] as? Int,
                    self.fieldView.cellSize <= s {
                     
-                    return false
+                    return (false, nil)
                 }
-                return !flag
+                return (!flag, nil)
                 
             case #selector(grow),
                 #selector(reset),
                 #selector(random):
                 
-                return !flag
+                return (!flag, nil)
                 
             case #selector(growTimer(_:)):
                 if flag {
-                    menuItem.title = "Stop"
+                    return (true, "Stop")
                 }
                 else {
-                    menuItem.title = "Start"
+                    return (true, "Start")
                 }
-                return true
                 
             default:
-                return false
+                return (false, nil)
         }
     }
+    
 }

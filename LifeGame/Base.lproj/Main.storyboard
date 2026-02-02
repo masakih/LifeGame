@@ -289,6 +289,54 @@ DQ
                         <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
                         <rect key="contentRect" x="196" y="240" width="480" height="270"/>
                         <rect key="screenRect" x="0.0" y="0.0" width="1680" height="1027"/>
+                        <toolbar key="toolbar" implicitIdentifier="A8AC4D0C-63B9-4FF2-A168-2779C63E9662" autosavesConfiguration="NO" allowsUserCustomization="NO" showsBaselineSeparator="NO" displayMode="iconOnly" sizeMode="regular" id="MdY-Tg-nhY">
+                            <allowedToolbarItems>
+                                <toolbarItem implicitItemIdentifier="5F8F1E76-DA7F-4AAC-B743-AFFFC292698C" label="Bigger" paletteLabel="Bigger" tag="-1" image="plus" catalog="system" bordered="YES" sizingBehavior="auto" id="aZE-Fe-SWs">
+                                    <connections>
+                                        <action selector="biggerCell:" target="Oky-zY-oP4" id="6Ha-qB-nOM"/>
+                                    </connections>
+                                </toolbarItem>
+                                <toolbarItem implicitItemIdentifier="233C9BF7-C59E-4382-BC87-78D29C212EBC" label="Smaller" paletteLabel="Smaller" tag="-1" image="minus" catalog="system" bordered="YES" sizingBehavior="auto" id="mjc-FO-Ldm">
+                                    <connections>
+                                        <action selector="smallerCell:" target="Oky-zY-oP4" id="ezv-yh-FOS"/>
+                                    </connections>
+                                </toolbarItem>
+                                <toolbarItem implicitItemIdentifier="48D6D561-A4FC-4867-9936-9EB8EC081EE1" label="Reset" paletteLabel="Reset" toolTip="Reset" tag="-1" image="rectangle.split.3x3" catalog="system" bordered="YES" sizingBehavior="auto" id="LKq-Hp-zyA">
+                                    <connections>
+                                        <action selector="reset:" target="Oky-zY-oP4" id="hwc-0O-pjQ"/>
+                                    </connections>
+                                </toolbarItem>
+                                <toolbarItem implicitItemIdentifier="1BA735B2-D2ED-4EAA-A794-24F7794A8BE7" label="Random" paletteLabel="Random" toolTip="Random" tag="-1" image="rectangle.pattern.checkered" catalog="system" bordered="YES" sizingBehavior="auto" id="mhT-sA-St5">
+                                    <connections>
+                                        <action selector="random:" target="Oky-zY-oP4" id="oIh-Wi-R7L"/>
+                                    </connections>
+                                </toolbarItem>
+                                <toolbarItem implicitItemIdentifier="D9B883A4-8E9A-4224-A583-BD5E983AB6ED" label="Grow" paletteLabel="Grow" toolTip="Grow" tag="-1" image="NSTouchBarSkipToEndTemplate" bordered="YES" sizingBehavior="auto" id="CEZ-f2-lOV">
+                                    <connections>
+                                        <action selector="grow:" target="Oky-zY-oP4" id="J2Z-t1-EKd"/>
+                                    </connections>
+                                </toolbarItem>
+                                <toolbarItem implicitItemIdentifier="E019374E-ED88-44A0-B3E1-BC53E283533A" label="Start" paletteLabel="Start" toolTip="Start" tag="-1" image="NSTouchBarPlayTemplate" bordered="YES" sizingBehavior="auto" id="mRK-zb-KXZ">
+                                    <connections>
+                                        <action selector="growTimer:" target="Oky-zY-oP4" id="Tck-jY-NZb"/>
+                                    </connections>
+                                </toolbarItem>
+                                <toolbarItem implicitItemIdentifier="NSToolbarSpaceItem" id="opu-pM-LuH"/>
+                                <toolbarItem implicitItemIdentifier="NSToolbarFlexibleSpaceItem" id="SO4-wY-kac"/>
+                            </allowedToolbarItems>
+                            <defaultToolbarItems>
+                                <toolbarItem reference="aZE-Fe-SWs"/>
+                                <toolbarItem reference="mjc-FO-Ldm"/>
+                                <toolbarItem reference="opu-pM-LuH"/>
+                                <toolbarItem reference="LKq-Hp-zyA"/>
+                                <toolbarItem reference="mhT-sA-St5"/>
+                                <toolbarItem reference="SO4-wY-kac"/>
+                                <toolbarItem reference="CEZ-f2-lOV"/>
+                                <toolbarItem reference="opu-pM-LuH"/>
+                                <toolbarItem reference="mRK-zb-KXZ"/>
+                            </defaultToolbarItems>
+                        </toolbar>
+                        <contentBorderThickness minY="32"/>
                         <connections>
                             <outlet property="delegate" destination="B8D-0N-5wS" id="98r-iN-zZc"/>
                         </connections>
@@ -310,73 +358,11 @@ DQ
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <customView id="fyH-PO-2c5" customClass="FieldView" customModule="LifeGame" customModuleProvider="target">
-                                <rect key="frame" x="7" y="64" width="604" height="200"/>
+                                <rect key="frame" x="0.0" y="32" width="619" height="238"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             </customView>
-                            <button verticalHuggingPriority="750" id="cvc-Bn-wM9">
-                                <rect key="frame" x="307" y="20" width="56" height="24"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
-                                <buttonCell key="cell" type="push" title="Grow" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="gGz-zM-VO9">
-                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                    <font key="font" metaFont="system"/>
-                                </buttonCell>
-                                <connections>
-                                    <action selector="grow:" target="XfG-lQ-9wD" id="rPw-nd-KOM"/>
-                                    <binding destination="Tdt-nx-t1X" name="enabled" keyPath="content.autoGrow" id="Yfy-bw-Uv2">
-                                        <dictionary key="options">
-                                            <string key="NSValueTransformerName">NSNegateBoolean</string>
-                                        </dictionary>
-                                    </binding>
-                                </connections>
-                            </button>
-                            <button verticalHuggingPriority="750" id="mAY-NY-R2m">
-                                <rect key="frame" x="375" y="20" width="59" height="24"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
-                                <buttonCell key="cell" type="push" title="Reset" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="W3I-F2-BpE">
-                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                    <font key="font" metaFont="system"/>
-                                </buttonCell>
-                                <connections>
-                                    <action selector="reset:" target="XfG-lQ-9wD" id="dMs-DH-0LT"/>
-                                    <binding destination="Tdt-nx-t1X" name="enabled" keyPath="content.autoGrow" id="7qS-OX-zyg">
-                                        <dictionary key="options">
-                                            <string key="NSValueTransformerName">NSNegateBoolean</string>
-                                        </dictionary>
-                                    </binding>
-                                </connections>
-                            </button>
-                            <button verticalHuggingPriority="750" id="EaV-Hp-FKj">
-                                <rect key="frame" x="446" y="20" width="82" height="24"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
-                                <buttonCell key="cell" type="push" title="Randoom" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Fuj-rL-u4j">
-                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                    <font key="font" metaFont="system"/>
-                                </buttonCell>
-                                <connections>
-                                    <action selector="random:" target="XfG-lQ-9wD" id="eWP-yp-pUK"/>
-                                    <binding destination="Tdt-nx-t1X" name="enabled" keyPath="content.autoGrow" id="NlL-l4-hYa">
-                                        <dictionary key="options">
-                                            <string key="NSValueTransformerName">NSNegateBoolean</string>
-                                        </dictionary>
-                                    </binding>
-                                </connections>
-                            </button>
-                            <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="wpS-Xf-cOS">
-                                <rect key="frame" x="540" y="20" width="54" height="24"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
-                                <buttonCell key="cell" type="push" title="Start" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="GmW-Zy-hh2">
-                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                    <font key="font" metaFont="system"/>
-                                    <string key="keyEquivalent" base64-UTF8="YES">
-DQ
-</string>
-                                </buttonCell>
-                                <connections>
-                                    <action selector="growTimer:" target="XfG-lQ-9wD" id="oAR-0Y-LMc"/>
-                                </connections>
-                            </button>
                             <textField focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="mhn-Af-Oyp">
-                                <rect key="frame" x="18" y="24" width="126" height="16"/>
+                                <rect key="frame" x="18" y="8" width="126" height="16"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <textFieldCell key="cell" lineBreakMode="clipping" title="Generations: 99999" id="vAb-1f-P1g">
                                     <font key="font" metaFont="system"/>
@@ -392,47 +378,25 @@ DQ
                                 </connections>
                             </textField>
                             <textField focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="bOL-nC-Cfb">
-                                <rect key="frame" x="167" y="24" width="34" height="16"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <textFieldCell key="cell" lineBreakMode="clipping" title="Size:" id="IwK-zX-G0X">
+                                <rect key="frame" x="540" y="8" width="61" height="16"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
+                                <textFieldCell key="cell" lineBreakMode="clipping" title="Size: 200" id="IwK-zX-G0X">
                                     <font key="font" metaFont="system"/>
                                     <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
-                            </textField>
-                            <stepper horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="aiC-Q5-y5d">
-                                <rect key="frame" x="233" y="19" width="20" height="26"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <stepperCell key="cell" continuous="YES" alignment="left" maxValue="100" id="aaU-y3-6E3"/>
                                 <connections>
-                                    <action selector="changeCellSize:" target="XfG-lQ-9wD" id="Sza-zI-bZ5"/>
-                                    <binding destination="Tdt-nx-t1X" name="enabled" keyPath="content.autoGrow" id="d2q-PO-rrZ">
+                                    <binding destination="Tdt-nx-t1X" name="displayPatternValue1" keyPath="content.cellSize" id="bqK-X5-2dg">
                                         <dictionary key="options">
-                                            <string key="NSValueTransformerName">NSNegateBoolean</string>
+                                            <string key="NSDisplayPattern">Size:  %{value1}@</string>
                                         </dictionary>
                                     </binding>
-                                    <binding destination="Tdt-nx-t1X" name="maxValue" keyPath="content.cellMaxSize" id="5Ta-pB-0ph"/>
-                                    <binding destination="Tdt-nx-t1X" name="minValue" keyPath="content.cellMinSize" previousBinding="5Ta-pB-0ph" id="IDL-YS-5BO"/>
-                                    <binding destination="Tdt-nx-t1X" name="value" keyPath="content.cellSize" previousBinding="IDL-YS-5BO" id="mZH-09-Uln"/>
-                                </connections>
-                            </stepper>
-                            <textField focusRingType="none" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="j9l-0w-LZt">
-                                <rect key="frame" x="203" y="20" width="28" height="24"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" borderStyle="bezel" alignment="right" title="20" drawsBackground="YES" id="aNT-b7-3x2">
-                                    <font key="font" metaFont="system"/>
-                                    <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
-                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                </textFieldCell>
-                                <connections>
-                                    <binding destination="Tdt-nx-t1X" name="value" keyPath="content.cellSize" id="euH-Qw-1bF"/>
                                 </connections>
                             </textField>
                         </subviews>
                     </view>
                     <connections>
                         <outlet property="fieldView" destination="fyH-PO-2c5" id="5Rh-c4-adf"/>
-                        <outlet property="startButton" destination="wpS-Xf-cOS" id="gdf-7T-Xc7"/>
                     </connections>
                 </viewController>
                 <customObject id="rPt-NT-nkU" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
@@ -445,4 +409,12 @@ DQ
             <point key="canvasLocation" x="5.5" y="655"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="NSTouchBarPlayTemplate" width="15" height="17"/>
+        <image name="NSTouchBarSkipToEndTemplate" width="19" height="16"/>
+        <image name="minus" catalog="system" width="14" height="4"/>
+        <image name="plus" catalog="system" width="14" height="13"/>
+        <image name="rectangle.pattern.checkered" catalog="system" width="18" height="14"/>
+        <image name="rectangle.split.3x3" catalog="system" width="18" height="14"/>
+    </resources>
 </document>
