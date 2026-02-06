@@ -71,41 +71,20 @@ final class Feild {
         
         self.generation = 0
     }
-
-    private func topLeft(_ x: Int, _ y: Int) -> Bool {
-        storage[y - 1][x - 1]
-    }
-    private func top(_ x: Int, _ y: Int) -> Bool {
-        storage[y - 1][x]
-    }
-    private func topRight(_ x: Int, _ y: Int) -> Bool {
-        storage[y - 1][x + 1]
-    }
-    private func left(_ x: Int, _ y: Int) -> Bool {
-        storage[y][x - 1]
-    }
-    private func right(_ x: Int, _ y: Int) -> Bool {
-        storage[y][x + 1]
-    }
-    private func bottomLeft(_ x: Int, _ y: Int) -> Bool {
-        storage[y + 1][x - 1]
-    }
-    private func bottom(_ x: Int, _ y: Int) -> Bool {
-        storage[y + 1][x]
-    }
-    func bottomRight(_ x: Int, _ y: Int) -> Bool {
-        storage[y + 1][x + 1]
-    }
     
     /// cellの一世代後の値を返す
     /// - Parameters:
     ///   - p: 対象セルの値
     ///   - around: 対象セルの隣接8方のセルの値
     /// - Returns: 対象セルの一世代後の値
-    private func grow1(p: Bool, _ around: Bool...) -> Bool {
-        assert(around.count == 8)
+    @inline(__always)
+    private func grow1(p: Bool,
+                       _ a0: Bool, _ a1: Bool, _ a2: Bool,
+                       _ a3: Bool, _ a4: Bool,
+                       _ a5: Bool, _ a6: Bool, _ a7: Bool) -> Bool {
 
-        let aliveCount = around.count { $0 }
+        let f: (Bool) -> Int = { $0 ? 1 : 0 }
+        let aliveCount = f(a0) + f(a1) + f(a2) + f(a3) + f(a4) + f(a5) + f(a6) + f(a7)
 
         switch (p, aliveCount) {
             case (false, 3):  return true
