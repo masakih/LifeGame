@@ -100,15 +100,19 @@ final class Feild {
         var changedCells: [(Int, Int)] = []
         
         for i in 1..<(height - 1) {
+            let rowPrev = storage[i - 1]
+            let row     = storage[i]
+            let rowNext = storage[i + 1]
+                        
             for j in 1..<(width - 1) {
                 
                 let next = grow1(
-                    p: storage[i][j],
-                    topLeft(j, i), top(j, i), topRight(j, i),
-                    left(j, i),  right(j, i),
-                    bottomLeft(j, i), bottom(j, i), bottomRight(j, i)
+                    p: row[j],
+                    rowPrev[j - 1], rowPrev[j], rowPrev[j + 1],
+                    row[j - 1], row[j + 1],
+                    rowNext[j - 1], rowNext[j], rowNext[j + 1]
                 )
-                if storage[i][j] != next {
+                if row[j] != next {
                     changedCells.append( (j, i) )
                 }
                 buffer[nextIndex][i][j] = next
