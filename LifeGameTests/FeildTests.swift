@@ -150,4 +150,28 @@ struct FeildTests {
         feild.toggle(1, 1)
         
     }
+    
+    @Test func growPerformanceTest() async throws {
+        let clock = ContinuousClock()
+        
+        let feild = await Feild(width: 109, height: 217)
+        await feild.random(5)
+        
+        // 計測開始
+        let startTime = clock.now
+        
+        for _ in 0..<200 {
+            await feild.grow()
+        }
+        
+        // 計測終了
+        let endTime = clock.now
+        let duration = endTime - startTime
+        
+        // 結果を出力 (秒単位)
+        debugPrint("実行時間: \(duration)")
+        
+        // 必要に応じてしきい値を設定
+        #expect(duration < .seconds(1.5))
+    }
 }
