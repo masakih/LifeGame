@@ -41,8 +41,9 @@ final class ViewController: NSViewController {
                         states: points
                             .map { (x, y) -> FieldView.PointState in
                                 switch self.field.storage[y][x] {
-                                    case true: .on(x, y)
-                                    case false: .off(x, y)
+                                    case 1: .on(x, y)
+                                    case 0: .off(x, y)
+                                    default : fatalError()
                                 }
                             }
                     )

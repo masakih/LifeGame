@@ -18,7 +18,7 @@ final class Feild {
     private(set) var width: Int
     private(set) var height: Int
 
-    private var buffer: [[[Bool]]] = []
+    private var buffer: [[[Int]]] = []
     
     // grow()によって変更されたセルをpublishする
     private var subject: PassthroughSubject<[(Int, Int)], Never> = .init()
@@ -44,7 +44,7 @@ final class Feild {
     private var currentBuffer = CurrentBuffer.first
     private var nextIndex: Int { currentBuffer.backing.rawValue }
 
-    var storage: [[Bool]] { buffer[currentBuffer.rawValue] }
+    var storage: [[Int]] { buffer[currentBuffer.rawValue] }
 
     init(width: Int, height: Int) {
         assert(width > 2)
@@ -61,7 +61,7 @@ final class Feild {
         buffer = Array(
             repeating: Array(
                 repeating: Array(
-                    repeating: false,
+                    repeating: 0,
                     count: width
                 ),
                 count: height
@@ -78,19 +78,16 @@ final class Feild {
     ///   - around: 対象セルの隣接8方のセルの値
     /// - Returns: 対象セルの一世代後の値
     @inline(__always)
-    private func grow1(p: Bool,
-                       _ a0: Bool, _ a1: Bool, _ a2: Bool,
-                       _ a3: Bool, _ a4: Bool,
-                       _ a5: Bool, _ a6: Bool, _ a7: Bool) -> Bool {
+    private func grow1(p: Int,
+                       _ a0: Int, _ a1: Int, _ a2: Int,
+                       _ a3: Int, _ a4: Int,
+                       _ a5: Int, _ a6: Int, _ a7: Int) -> Int {
 
-        let f: (Bool) -> Int = { $0 ? 1 : 0 }
-        let aliveCount = f(a0) + f(a1) + f(a2) + f(a3) + f(a4) + f(a5) + f(a6) + f(a7)
+        switch (p, a0 + a1 + a2 + a3 + a4 + a5 + a6 + a7) {
+            case (0, 3): 1
+            case (1, 2...3): 1
 
-        switch (p, aliveCount) {
-            case (false, 3):  return true
-            case (true, 2...3): return true
-
-            default: return false
+            default: 0
         }
     }
     
@@ -150,8 +147,8 @@ final class Feild {
                 (1..<(height - 1)).map { y in
                     buffer[currentBuffer.rawValue][y][x] =
                     switch (1...n).randomElement()! {
-                        case 3: true
-                        default: false
+                        case 3: 1
+                        default: 0
                     }
                     return (x, y)
                 }
@@ -174,7 +171,7 @@ final class Feild {
             return
         }
         
-        buffer[currentBuffer.rawValue][y][x].toggle()
+        buffer[currentBuffer.rawValue][y][x] ^= 1
         
         subject.send([(x, y)])
     }

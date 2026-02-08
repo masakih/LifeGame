@@ -20,7 +20,7 @@ struct FeildTests {
         #expect(feild.height == 4)
         #expect(feild.storage.count == 4)
         #expect(feild.storage.allSatisfy{ $0.count == 4 })
-        #expect(feild.storage.allSatisfy { $0.allSatisfy { $0 == false } })
+        #expect(feild.storage.allSatisfy { $0.allSatisfy { $0 == 0 } })
     }
     
     @Test func testToggle() {
@@ -33,10 +33,10 @@ struct FeildTests {
         #expect(
             feild.storage ==
             [
-                [false, false, false, false],
-                [false, true,  true,  false],
-                [false, false, true,  false],
-                [false, false, false, false]
+                [0, 0, 0, 0],
+                [0, 1, 1, 0],
+                [0, 0, 1, 0],
+                [0, 0, 0, 0]
             ]
         )
     }
@@ -55,12 +55,12 @@ struct FeildTests {
         #expect(
             feild.storage ==
             [
-                [false, false, false, false, false, false],
-                [false, false, false, false, false, false],
-                [false, false, true,  true,  true,  false],
-                [false, true,  true,  true,  false, false],
-                [false, false, false, false, false, false],
-                [false, false, false, false, false, false]
+                [0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0],
+                [0, 0, 1, 1, 1, 0],
+                [0, 1, 1, 1, 0, 0],
+                [0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0]
             ]
         )
         
@@ -68,12 +68,12 @@ struct FeildTests {
         #expect(
             feild.storage ==
             [
-                [false, false, false, false, false, false],
-                [false, false, false, true,  false, false],
-                [false, true,  false, false, true,  false],
-                [false, true,  false, false, true,  false],
-                [false, false, true,  false, false, false],
-                [false, false, false, false, false, false]
+                [0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 1, 0, 0],
+                [0, 1, 0, 0, 1, 0],
+                [0, 1, 0, 0, 1, 0],
+                [0, 0, 1, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0]
             ]
         )
         
@@ -81,12 +81,12 @@ struct FeildTests {
         #expect(
             feild.storage ==
             [
-                [false, false, false, false, false, false],
-                [false, false, false, false, false, false],
-                [false, false, true,  true,  true,  false],
-                [false, true,  true,  true,  false, false],
-                [false, false, false, false, false, false],
-                [false, false, false, false, false, false]
+                [0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0],
+                [0, 0, 1, 1, 1, 0],
+                [0, 1, 1, 1, 0, 0],
+                [0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0]
             ]
         )
     }
@@ -172,6 +172,6 @@ struct FeildTests {
         debugPrint("実行時間: \(duration)")
         
         // 必要に応じてしきい値を設定
-        #expect(duration < .seconds(1.5))
+        #expect(duration < .seconds(1.2))
     }
 }
