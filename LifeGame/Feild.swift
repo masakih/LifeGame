@@ -95,6 +95,7 @@ final class Feild {
     func grow() {
         
         var changedCells: [(Int, Int)] = []
+        changedCells.reserveCapacity(width * height / 6)
         
         for i in 1..<(height - 1) {
             let rowPrev = storage[i - 1]
