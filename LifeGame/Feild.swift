@@ -6,6 +6,7 @@
 //
 
 import Combine
+import Dispatch
 
 final class Feild {
     
@@ -94,32 +95,43 @@ final class Feild {
     /// 一世代進める
     func grow() {
         
-        var changedCells: [(Int, Int)] = []
-        changedCells.reserveCapacity(width * height / 6)
+        let queue = DispatchQueue(label: "GrowQueue", attributes: .concurrent)
+        let group = DispatchGroup()
+        
+        var changedCells = Array(repeating: [(Int, Int)](), count: height - 2)
         
         for i in 1..<(height - 1) {
-            let rowPrev = storage[i - 1]
-            let row     = storage[i]
-            let rowNext = storage[i + 1]
-                        
-            for j in 1..<(width - 1) {
+            group.enter()
+            queue.async {
+                let rowPrev = self.storage[i - 1]
+                let row     = self.storage[i]
+                let rowNext = self.storage[i + 1]
                 
-                let next = grow1(
-                    p: row[j],
-                    rowPrev[j - 1], rowPrev[j], rowPrev[j + 1],
-                    row[j - 1], row[j + 1],
-                    rowNext[j - 1], rowNext[j], rowNext[j + 1]
-                )
-                if row[j] != next {
-                    changedCells.append( (j, i) )
+                var local: [(Int, Int)] = []
+                
+                for j in 1..<(self.width - 1) {
+                    
+                    let next = self.grow1(
+                        p: row[j],
+                        rowPrev[j - 1], rowPrev[j], rowPrev[j + 1],
+                        row[j - 1], row[j + 1],
+                        rowNext[j - 1], rowNext[j], rowNext[j + 1]
+                    )
+                    if row[j] != next {
+                        local.append( (j, i) )
+                    }
+                    self.buffer[self.nextIndex][i][j] = next
                 }
-                buffer[nextIndex][i][j] = next
+                changedCells[i - 1] = local
+                group.leave()
             }
         }
+        
+        group.wait()
 
         currentBuffer.toggle()
         
-        subject.send(changedCells)
+        subject.send(changedCells.flatMap { $0 })
         
         self.generation += 1
     }

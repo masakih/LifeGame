@@ -93,6 +93,10 @@ struct FeildTests {
     
     @Test func testPublish() {
         
+        func f(_ p: (Int, Int)) -> [Int] {
+            [p.0, p.1]
+        }
+        
         // ヒキガエル
         let feild = Feild(width: 6, height: 6)
         feild.toggle(2, 2)
@@ -110,12 +114,13 @@ struct FeildTests {
                          (2, 3), (3, 3), (4, 3),
                          (2, 4)]
         publisher.first().sink { cells in
-            #expect(
-                zip(cells, changed01)
-                    .allSatisfy {
-                        $0.0 == $1.0 && $0.1 == $1.1
-                    }
-            )
+            let cc = changed01
+                .sorted { $0.0 < $1.0 || ($0.0 == $1.0 && $0.1 < $1.1) }
+                .map(f)
+            let ce: [[Int]] = cells
+                .sorted { $0.0 < $1.0 || ($0.0 == $1.0 && $0.1 < $1.1) }
+                .map(f)
+            #expect(cc == ce)
         }
         .store(in: &cancellables)
         feild.grow()
@@ -125,12 +130,13 @@ struct FeildTests {
                          (2, 3), (3, 3), (4, 3),
                          (2, 4)]
         publisher.first().sink { cells in
-            #expect(
-                zip(cells, changed02)
-                    .allSatisfy {
-                        $0.0 == $1.0 && $0.1 == $1.1
-                    }
-            )
+            let cc = changed02
+                .sorted { $0.0 < $1.0 || ($0.0 == $1.0 && $0.1 < $1.1) }
+                .map(f)
+            let ce: [[Int]] = cells
+                .sorted { $0.0 < $1.0 || ($0.0 == $1.0 && $0.1 < $1.1) }
+                .map(f)
+            #expect(cc == ce)
         }
         .store(in: &cancellables)
         feild.grow()
@@ -151,17 +157,17 @@ struct FeildTests {
         
     }
     
-    @Test func growPerformanceTest() async throws {
+    @Test func growPerformanceTest()  {
         let clock = ContinuousClock()
         
-        let feild = await Feild(width: 109, height: 217)
-        await feild.random(5)
+        let feild = Feild(width: 109, height: 217)
+        feild.random(5)
         
         // 計測開始
         let startTime = clock.now
         
         for _ in 0..<200 {
-            await feild.grow()
+            feild.grow()
         }
         
         // 計測終了
