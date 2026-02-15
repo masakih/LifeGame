@@ -10,18 +10,11 @@ import Combine
 
 final class ViewController: NSViewController {
     
-    enum Setting {
-        case autoGrow(Bool)
-        case generation(Int)
-        case cellSize(Int)
-        case maxCellSize(Int)
-        case minCellSize(Int)
-    }
-    
     @IBOutlet weak var fieldView: FieldView!
         
     /// for CocoaBindings
     @IBOutlet var settings: NSMutableDictionary! = [:]
+    lazy var typedSettings: TypedSettings = .init(self.settings)
         
     var width = 30
     var height = 21
@@ -53,11 +46,11 @@ final class ViewController: NSViewController {
             field
                 .generationPublisher()
                 .sink { [weak self] generation in
-                    self?.setting(.generation(generation))
+                    self?.typedSettings[.generation] = generation
                 }
                 .store(in: &self.fieldCacellables)
             
-            setting(.generation(0))
+            typedSettings[.generation] = 0
         }
     }
     
@@ -79,6 +72,17 @@ final class ViewController: NSViewController {
         }
         
         cocoaBindingsSetup()
+        
+        typedSettings.publisher(for: .cellSize)
+            .sink { [weak self] size in
+                
+                guard let size, let self else { return }
+                
+                UserDefaults.standard.setValue(size, forKey: "cellSize")
+                (self.width, self.height) = fieldView.setCellSize(size: size)
+                field = Feild(width: self.width, height: self.height)
+            }
+            .store(in: &self.cancellables)
 
         field = Feild(width: width, height: height)
         
@@ -121,39 +125,34 @@ final class ViewController: NSViewController {
                     self?.field.grow()
                 }
             
-            self.setting(.autoGrow(true))
+            typedSettings[.autoGrow] = true
         }
         else {
             growTimerCanceler?.cancel()
             growTimerCanceler = nil
                         
-            self.setting(.autoGrow(false))
+            typedSettings[.autoGrow] = false
         }
         
     }
     
     @IBAction func biggerCell(_ sender: Any) {
-        
-        let current = self.fieldView.cellSize
-        
-        self.setting(.cellSize(current + 1))
+                
+        self.typedSettings[.cellSize]? += 1
     }
     
     @IBAction func smallerCell(_ sender: Any) {
-        
-        let current = self.fieldView.cellSize
-        
-        self.setting(.cellSize(current - 1))
+                
+        self.typedSettings[.cellSize]? -= 1
     }
     
     func cocoaBindingsSetup() {
         
-        self.setting(.autoGrow(false))
-        self.setting(.generation(0))
-        
-        self.setting(.maxCellSize(20))
-        self.setting(.minCellSize(3))
-        self.setting(.cellSize(self.fieldView.cellSize))
+        self.typedSettings[.autoGrow] = false
+        self.typedSettings[.generation] = 0
+        self.typedSettings[.cellMaxSize] = 20
+        self.typedSettings[.cellMinSize] = 3
+        self.typedSettings[.cellSize] = self.fieldView.cellSize
     }
     
     private func setupResizing() {
@@ -213,26 +212,6 @@ final class ViewController: NSViewController {
             }
             .store(in: &self.cancellables)
     }
-    
-    private func setting(_ value: Setting) {
-        
-        switch value {
-            case .autoGrow(let flag):
-                self.settings.setValue(flag, forKey: "autoGrow")
-            case .generation(let generation):
-                self.settings.setValue(generation, forKey: "generation")
-            case .cellSize(let size):
-                self.settings.setValue(size, forKey: "cellSize")
-                UserDefaults.standard.setValue(size, forKey: "cellSize")
-                (self.width, self.height) = fieldView.setCellSize(size: size)
-                field = Feild(width: self.width, height: self.height)
-            case .maxCellSize(let max):
-                self.settings.setValue(max, forKey: "cellMaxSize")
-            case .minCellSize(let min):
-                self.settings.setValue(min, forKey: "cellMinSize")
-
-        }
-    }
 }
 
 extension ViewController: NSMenuItemValidation, NSToolbarItemValidation {
@@ -278,14 +257,14 @@ extension ViewController: NSMenuItemValidation, NSToolbarItemValidation {
     
     func validateAction(_ action: Selector) -> (flag: Bool, title: String?) {
         
-        guard let flag = self.settings["autoGrow"] as? Bool else {
+        guard let flag = self.typedSettings[.autoGrow] else {
             
             return (false, nil)
         }
         
         switch action {
             case #selector(biggerCell):
-                if let l = self.settings["cellMaxSize"] as? Int,
+                if let l = self.typedSettings[.cellMaxSize],
                    self.fieldView.cellSize >= l {
                     
                     return (false, nil)
@@ -294,7 +273,7 @@ extension ViewController: NSMenuItemValidation, NSToolbarItemValidation {
                 
             case #selector(smallerCell):
                 
-                if let s = self.settings["cellMinSize"] as? Int,
+                if let s = self.typedSettings[.cellMinSize],
                    self.fieldView.cellSize <= s {
                     
                     return (false, nil)
