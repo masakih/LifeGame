@@ -71,6 +71,11 @@ final class ViewController: NSViewController {
             fatalError("Main.storyboard に FieldView が見つかりません")
         }
         
+        if let prevCellSiize = UserDefaults.standard.value(forKey: "cellSize") as? Int {
+            
+            _ = fieldView.setCellSize(size: prevCellSiize)
+        }
+        
         cocoaBindingsSetup()
         
         typedSettings.publisher(for: .cellSize)
