@@ -216,15 +216,27 @@ final class ViewController: NSViewController {
 
 extension ViewController: NSMenuItemValidation, NSToolbarItemValidation {
     
+    enum Response {
+        case start
+        case pause
+        
+        var title: String? {
+            switch self {
+                case .start: return "Start"
+                case .pause: return "Pause"
+            }
+        }
+    }
+    
     func validateMenuItem(_ menuItem: NSMenuItem) -> Bool {
         
         guard let action = menuItem.action else {
             return false
         }
         
-        let (flag, title) = validateAction(action)
+        let (flag, response) = validateAction(action)
         
-        title.map { menuItem.title = $0 }
+        response?.title.map { menuItem.title = $0 }
         
         return flag
     }
@@ -235,27 +247,27 @@ extension ViewController: NSMenuItemValidation, NSToolbarItemValidation {
             return false
         }
                         
-        let (flag, title) = validateAction(action)
+        let (flag, response) = validateAction(action)
         
-        switch title {
-            case "Start":
+        switch response {
+            case .start:
                 item.image = NSImage(
                     systemSymbolName: "play.fill",
                     accessibilityDescription: nil
                 )
-            case "Stop":
+            case .pause:
                 item.image = NSImage(
                     systemSymbolName: "pause.fill",
                     accessibilityDescription: nil
                 )
-            default:
+            case nil:
                 ()
         }
         
         return flag
     }
     
-    func validateAction(_ action: Selector) -> (flag: Bool, title: String?) {
+    func validateAction(_ action: Selector) -> (flag: Bool, responce: Response?) {
         
         guard let flag = self.typedSettings[.autoGrow] else {
             
@@ -288,15 +300,14 @@ extension ViewController: NSMenuItemValidation, NSToolbarItemValidation {
                 
             case #selector(autoGrow):
                 if flag {
-                    return (true, "Stop")
+                    return (true, .pause)
                 }
                 else {
-                    return (true, "Start")
+                    return (true, .start)
                 }
                 
             default:
                 return (false, nil)
         }
     }
-    
 }
